@@ -1,0 +1,145 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8" />
+<title>Spring Boot Thymeleaf Application - Bootstrap Date Time
+	Picker</title>
+
+<link th:rel="stylesheet"
+	th:href="@{/assets/tempusdominus-bootstrap-4/tempusdominus-bootstrap-4.min.css}" />
+<link th:rel="stylesheet"
+	th:href="@{/webjars/bootstrap/4.0.0-2/css/bootstrap.min.css} " />
+<link th:rel="stylesheet"
+	th:href="@{/webjars/font-awesome/5.11.2/css/all.css} " />
+</head>
+<body>
+
+	<!-- Navigation -->
+	<nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
+		<div class="container">
+			<a class="navbar-brand" href="#">Vacation Manager</a>
+			<button class="navbar-toggler" type="button" data-toggle="collapse"
+				data-target="#navbarResponsive" aria-controls="navbarResponsive"
+				aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="navbarResponsive">
+				<ul class="navbar-nav ml-auto">
+					<li class="nav-item active"><a class="nav-link" href="#">Home
+							<span class="sr-only">(current)</span>
+					</a></li>
+					<li class="nav-item"><a class="nav-link"
+						th:href="@{'/fom?message='+${angajat.getId()}}">Add Vacantion</a>
+					</li>
+					<li class="nav-item"><a class="nav-link"
+						th:href="@{'/addTeam?id='+${angajat.getId()}}">Team</a></li>
+					<li class="nav-item"><a class="nav-link" href="#">Contact</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+
+	<div class="container">
+
+		<div class="row">
+			<div class="col-md-4 mt-5">
+				<h1
+					th:text="'Wellcome back, ' + ${message} + ', to vacantion planer!'">
+				</h1>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-4 mt-5">
+				<h1 th:text="'Remaining days for vacantion: ' + ${days} + '!'">
+				</h1>
+			</div>
+		</div>
+		<div class="container my-2">
+			<div class="card">
+				<div class="card-body">
+					<div th:switch="${breaks}" class="container my-5">
+						<!-- <p class="my-5">
+							<a th:href="@{'/break/getBreak?id='+${angajat.getId()}} class="btn btn-primary"><i
+								class="fas fa-user-plus ml-2"> Adauga Angajat</i></a>
+						</p> -->
+						<div class="col-md-10">
+							<h2 th:case="null">Nu sunt angajati inca!</h2>
+							<div th:case="*">
+								<table class="table table-striped table-responsive-md">
+									<thead>
+										<tr>
+											<th>Start Date</th>
+											<th>End Date</th>
+											<th>Status</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr th:each="break : ${breaks}">
+											<td th:text="${break.startDate}"></td>
+											<td th:text="${break.endDate}"></td>
+											<td th:text="${break.status}"></td>
+
+											<!-- <td><a th:href="@{/angajat/edit/{id}(id=${angajat.id})}"
+												class="btn btn-primary"><i class="fas fa-user-edit ml-2"></i></a></td>
+											-->
+											<td><a
+												th:href="@{'/break/delete?id='+${break.id}+'&id2='+${angajat.id}}"
+												class="btn btn-primary"><i class="fas fa-trash-alt ml-2"></i></a></td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="container my-2">
+			<div class="card">
+				<div class="card-body">
+					<div th:switch="${breaksAngajati}" class="container my-5">
+						<div class="col-md-10">
+							<table class="table table-striped table-responsive-md">
+								<thead>
+									<tr>
+										<th>Start Date</th>
+										<th>End Date</th>
+										<th>Status</th>
+									</tr>
+								</thead>
+								<tbody>
+
+									<tr th:each="break : ${breaksAngajati}">
+										<form
+											th:action="@{'/stat?id='+${angajat.getId()}+'&breakId='+${break.getId()} +'&statId='}"
+											method="post">
+											<td th:text="${break.startDate}"></td>
+											<td th:text="${break.endDate}"></td>
+											<td th:text="${break.status}"></td>
+											<td><select class="form-control" name="example"
+												id="example">
+													<option th:each="stat : ${status}" th:value="${stat.id}"
+														th:selected="${stat.isSelected(lastselected)}"
+														th:text="${stat.name}"></option>
+											</select></td>
+											<td><input type="submit" value="Ok" /></td>
+										</form>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	</div>
+
+
+</body>
+</html>
