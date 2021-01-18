@@ -57,5 +57,14 @@ public class EchipaService {
 	{
 		return repository.getEchipeMenagedByAngajat(angajatId);
 	}
+	
+	public void deleteEchipa2(String id)
+	{
+//		repository.alter1();
+//		repository.alter2();
+		repository.deleteEchipa2(Integer.valueOf(id));
+//		repository.alter3();
+//		repository.alter4();
+	}
 
 }

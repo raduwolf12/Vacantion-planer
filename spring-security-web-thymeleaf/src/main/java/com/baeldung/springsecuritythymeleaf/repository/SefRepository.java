@@ -12,4 +12,7 @@ import com.baeldung.springsecuritythymeleaf.model.Sef;
 public interface SefRepository extends JpaRepository<Sef, Long> {
 	@Query(nativeQuery = true, value = "SELECT * FROM sefi where ceo = true")
 	List<Sef> getCeo();
+	
+	@Query(nativeQuery = true, value = "SELECT * FROM sefi where sefi.angajat_id =?")
+	Sef getSefByAngajatId(Long id);
 }

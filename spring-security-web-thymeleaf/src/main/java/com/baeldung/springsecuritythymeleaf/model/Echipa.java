@@ -23,14 +23,18 @@ public class Echipa {
 	@Column(name = "echipa_name", length = 100)
 	private String echipaName;
 
-	@ManyToMany(cascade = { CascadeType.MERGE, CascadeType.REMOVE }, fetch = FetchType.EAGER)
+	@ManyToMany(cascade = { CascadeType.MERGE,}, fetch = FetchType.EAGER)
 	@JoinColumn(name = "angajat_id")
 	private List<Angajat> angajati;
 
 	Echipa() {
 
 	}
-
+	public Echipa( String echipaName, List<Angajat> angajati) {
+		super();
+		this.echipaName = echipaName;
+		this.angajati = angajati;
+	}
 	public Echipa(Long id, String echipaName, List<Angajat> angajati) {
 		super();
 		this.id = id;

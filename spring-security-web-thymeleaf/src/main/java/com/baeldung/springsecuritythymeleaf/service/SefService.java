@@ -56,5 +56,10 @@ public class SefService {
 	public Object getAngajatiEchipeForSefId(Long id) {
 		return echipaRepository;
 	}
+	
+	public Sef getSefByAngajatId(Long id) {
+		return repository.getSefByAngajatId(id);
+	}
 
+	
 }

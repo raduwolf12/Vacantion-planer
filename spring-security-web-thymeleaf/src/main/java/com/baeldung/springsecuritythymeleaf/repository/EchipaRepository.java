@@ -2,8 +2,10 @@ package com.baeldung.springsecuritythymeleaf.repository;
 
 import java.util.List;
 
+import org.hibernate.annotations.Type;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.baeldung.springsecuritythymeleaf.model.Echipa;
@@ -19,5 +21,16 @@ public interface EchipaRepository extends JpaRepository<Echipa, Long> {
 			"			join sefi on sefi.sef_id = sefi_echipe.sef_sef_id where sefi.angajat_id=?")
 	List<Echipa> getEchipeMenagedByAngajat(Long angajatId);
 	
+
+	@Query(nativeQuery = true, value = "SELECT  deleateEchipa(?);")
+	void deleteEchipa2(int id);
 	
+//	@Query(nativeQuery = true, value = "ALTER TABLE echipe DISABLE TRIGGER ALL;")
+//	void alter1();
+//	@Query(nativeQuery = true, value = "ALTER TABLE sefi_echipe DISABLE TRIGGER ALL;")
+//	void alter2();
+//	@Query(nativeQuery = true, value = "ALTER TABLE echipe ENABLE TRIGGER ALL;")
+//	void alter3();
+//	@Query(nativeQuery = true, value = "ALTER TABLE sefi_echipe ENABLE TRIGGER ALL;")
+//	void alter4();
 }

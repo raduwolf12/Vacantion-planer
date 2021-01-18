@@ -21,20 +21,27 @@ public class Sef {
 	@Id
 	@Column(name = "sef_id", unique = true, nullable = false)
 	private Long id;
-	
-	@Column(name = "ceo",  nullable = false)
+
+	@Column(name = "ceo", nullable = false)
 	private boolean isCeo;
 
-	@ManyToOne(optional = false, cascade = { CascadeType.MERGE, CascadeType.REMOVE }, fetch = FetchType.EAGER)
+	@ManyToOne(optional = false, cascade = { CascadeType.MERGE }, fetch = FetchType.EAGER)
 	@JoinColumn(name = "angajat_id")
 	private Angajat angajatId;
 
-	@ManyToMany(cascade = { CascadeType.MERGE, CascadeType.REMOVE }, fetch = FetchType.EAGER)
+	@ManyToMany(cascade = { CascadeType.MERGE }, fetch = FetchType.EAGER)
 	@JoinColumn(name = "echipa_id")
 	private List<Echipa> echipe;
 
 	Sef() {
 
+	}
+
+	public Sef(boolean isCeo, Angajat angajatId, List<Echipa> echipe) {
+		super();
+		this.isCeo = isCeo;
+		this.angajatId = angajatId;
+		this.echipe = echipe;
 	}
 
 	public Sef(Long id, boolean isCeo, Angajat angajatId, List<Echipa> echipe) {
@@ -76,7 +83,5 @@ public class Sef {
 	public void setEchipe(List<Echipa> echipe) {
 		this.echipe = echipe;
 	}
-
-	
 
 }
