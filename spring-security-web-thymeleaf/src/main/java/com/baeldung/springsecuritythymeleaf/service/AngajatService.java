@@ -17,13 +17,22 @@ public class AngajatService {
 	@Autowired
 	private AngajatRepository repository;
 
-	public List<Angajat> getAngajati() {
-		return repository.findAll();
+	public List<AngajatDto> getAngajati() {
+		List<Angajat> angajati = repository.findAll();
+		List<AngajatDto> angajatDtos = new ArrayList<AngajatDto>();
+		for (Angajat ang : angajati) {
+			angajatDtos.add(convertToDto(ang));
+
+		}
+		return angajatDtos;
 	}
 
-	public Angajat getAngajat(Long id) {
+	public AngajatDto getAngajat(Long id) {
 		Optional<Angajat> angajatOpt = repository.findById(id);
-		return angajatOpt.orElse(null);
+
+		AngajatDto angajatDtos = convertToDto(angajatOpt.orElse(null));
+
+		return angajatDtos;
 	}
 
 	public Angajat createAngajat(Angajat angajat) {
@@ -44,34 +53,55 @@ public class AngajatService {
 		return repository.login(name, password);
 	}
 
-	public Angajat findByEmail(String email) {
-		return repository.getAngajatByEmail(email);
+	public AngajatDto findByEmail(String email) {
+		Angajat angajat = repository.getAngajatByEmail(email);
+		AngajatDto angajatDto = convertToDto(angajat);
+		return angajatDto;
+	}
+
+	public AngajatDto getAngajatByEmailAndPassword(String email, String password) {
+		 
+		Angajat angajat = repository.getAngajatByEmailAndPassword(email, password);
+		AngajatDto angajatDto = convertToDto(angajat);
+		return angajatDto;
 	}
 
 	public List<AngajatDto> getAngajatiEchipe(Long id) {
 		List<Angajat> list = repository.getAngajatiBySefId(id);
-		List<AngajatDto> listDto = new ArrayList<AngajatDto>(); 
-		for(Angajat angajat:list)
-		{
+		List<AngajatDto> listDto = new ArrayList<AngajatDto>();
+		for (Angajat angajat : list) {
 			listDto.add(convertToDto(angajat));
 		}
 		return listDto;
 	}
-	
+
+	public List<AngajatDto> getAngajatiBySefIdAndSef(Long id) {
+		List<Angajat> list = repository.getAngajatiBySefIdAndSef(id);
+		List<AngajatDto> listDto = new ArrayList<AngajatDto>();
+		for (Angajat angajat : list) {
+			listDto.add(convertToDto(angajat));
+		}
+		return listDto;
+	}
+
 	public List<AngajatDto> getAngajatiEchipeIncludingSef(Long id) {
 		List<Angajat> list = repository.getAngajatiBySefIdIncludingSef(id);
-		List<AngajatDto> listDto = new ArrayList<AngajatDto>(); 
-		for(Angajat angajat:list)
-		{
+		List<AngajatDto> listDto = new ArrayList<AngajatDto>();
+		for (Angajat angajat : list) {
 			listDto.add(convertToDto(angajat));
 		}
 		return listDto;
 	}
-	
 
-	private AngajatDto convertToDto(Angajat angajat) {
+	public AngajatDto convertToDto(Angajat angajat) {
 		ModelMapper modelMapper = new ModelMapper();
 		AngajatDto angajatDto = modelMapper.map(angajat, AngajatDto.class);
 		return angajatDto;
+	}
+
+	public Angajat convertDtoToEntity(AngajatDto angajatDto) {
+		ModelMapper modelMapper = new ModelMapper();
+		Angajat angajat = modelMapper.map(angajatDto, Angajat.class);
+		return angajat;
 	}
 }

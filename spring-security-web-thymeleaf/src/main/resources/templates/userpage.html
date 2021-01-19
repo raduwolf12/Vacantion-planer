@@ -55,6 +55,12 @@
 				</h1>
 			</div>
 		</div>
+		<div class="row">
+			<div th:if="${ceo}" class="col-md-4 mt-5">
+				<h1 th:text="CEO"></h1>
+			</div>
+			<div th:unless="${ceo}"></div>
+		</div>
 		<div class="container my-2">
 			<div class="card">
 				<div class="card-body">
@@ -116,16 +122,18 @@
 										<form
 											th:action="@{'/stat?id='+${angajat.getId()}+'&breakId='+${break.getId()} +'&statId='}"
 											method="post">
-											<td th:text="${break.startDate}"></td>
-											<td th:text="${break.endDate}"></td>
-											<td th:text="${break.status}"></td>
-											<td><select class="form-control" name="example"
-												id="example">
-													<option th:each="stat : ${status}" th:value="${stat.id}"
-														th:selected="${stat.isSelected(lastselected)}"
-														th:text="${stat.name}"></option>
-											</select></td>
-											<td><input type="submit" value="Ok" /></td>
+										<td th:text="${break.startDate}"></td>
+										<td th:text="${break.endDate}"></td>
+										<td th:text="${break.status}"></td>
+										<td><select class="form-control" name="example"
+											id="example">
+												<option th:each="stat : ${status}" th:value="${stat.id}"
+													th:selected="${stat.isSelected(lastselected)}"
+													th:text="${stat.name}"></option>
+										</select></td>
+										<td th:if="${break.getAngajati().get(0).getId() eq angajat.id}" th:text="${ceoText}"></td>
+										<td th:unles="${break.getAngajati().get(0).getId() eq angajat.id}" th:text="${break.getAngajati().get(0).getAngajatName()}"></td>
+										<td><input type="submit" value="Ok" /></td>
 										</form>
 									</tr>
 								</tbody>
@@ -138,7 +146,7 @@
 		</div>
 	</div>
 
-	</div>
+	<!-- </div> -->
 
 
 </body>

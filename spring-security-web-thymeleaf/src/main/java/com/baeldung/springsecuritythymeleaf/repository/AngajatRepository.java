@@ -19,6 +19,10 @@ public interface AngajatRepository extends JpaRepository<Angajat, Long> {
 
 	@Query(nativeQuery = true, value = "SELECT *  FROM  angajati  WHERE angajati.email=?")
 	Angajat getAngajatByEmail(String email);
+	
+	@Query(nativeQuery = true, value = "SELECT *  FROM  angajati  WHERE angajati.email=? AND angajati.\"password\"= ?")
+	Angajat getAngajatByEmailAndPassword(String email,String password);
+	
 
 	@Query(nativeQuery = true, value = "SELECT angajati.*\r\n" + "FROM sefi\r\n"
 			+ "INNER JOIN sefi_echipe ON sefi.sef_id=sefi_echipe.sef_sef_id \r\n"
@@ -27,6 +31,14 @@ public interface AngajatRepository extends JpaRepository<Angajat, Long> {
 			+ "join angajati on angajati.angajat_id = echipe_angajati.angajati_angajat_id\r\n"
 			+ "where sefi.angajat_id=:id and angajati.angajat_id!=:id")
 	List<Angajat> getAngajatiBySefId(@Param("id")Long id);
+	
+	@Query(nativeQuery = true, value = "SELECT angajati.*\r\n" + "FROM sefi\r\n"
+			+ "INNER JOIN sefi_echipe ON sefi.sef_id=sefi_echipe.sef_sef_id \r\n"
+			+ "join echipe on echipe.echipa_id=sefi_echipe.echipe_echipa_id \r\n"
+			+ "join echipe_angajati on echipe_angajati.echipa_echipa_id =  echipe.echipa_id\r\n"
+			+ "join angajati on angajati.angajat_id = echipe_angajati.angajati_angajat_id\r\n"
+			+ "where sefi.angajat_id=:id")
+	List<Angajat> getAngajatiBySefIdAndSef(@Param("id")Long id);
 	
 	@Query(nativeQuery = true, value = "SELECT angajati.*\r\n" + "FROM sefi\r\n"
 			+ "INNER JOIN sefi_echipe ON sefi.sef_id=sefi_echipe.sef_sef_id \r\n"

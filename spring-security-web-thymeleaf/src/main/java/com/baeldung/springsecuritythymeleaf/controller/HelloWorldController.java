@@ -1,6 +1,9 @@
 package com.baeldung.springsecuritythymeleaf.controller;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -13,6 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.view.RedirectView;
 
 import com.baeldung.springsecuritythymeleaf.model.Angajat;
 import com.baeldung.springsecuritythymeleaf.model.Break;
@@ -22,7 +26,6 @@ import com.baeldung.springsecuritythymeleaf.model.StatusDto;
 import com.baeldung.springsecuritythymeleaf.model.enums.Status;
 import com.baeldung.springsecuritythymeleaf.repository.AngajatRepository;
 import com.baeldung.springsecuritythymeleaf.repository.BreakRepository;
-import com.baeldung.springsecuritythymeleaf.repository.SefRepository;
 import com.baeldung.springsecuritythymeleaf.repository.UserRepository;
 import com.baeldung.springsecuritythymeleaf.service.BreakService;
 import com.baeldung.springsecuritythymeleaf.service.EchipaService;
@@ -35,9 +38,6 @@ public class HelloWorldController {
 
 	@Autowired
 	private BreakService breakService;
-
-	@Autowired
-	private UserRepository repo;
 
 	@Autowired
 	private AngajatRepository repo1;
@@ -54,14 +54,6 @@ public class HelloWorldController {
 
 		return "helloworld";
 	}
-
-//	@GetMapping("/index")
-//	public String index(Model model) {
-//		model.addAttribute("message", "Hello World!");
-//		List<User> v = repo.findAll();
-//		model.addAttribute("users", v);
-//		return "index";
-//	}
 
 	@GetMapping("/addAngajat")
 	public String addAngajat(Model model) {
@@ -146,9 +138,23 @@ public class HelloWorldController {
 		model.addAttribute("angajat", angajat);
 		model.addAttribute("angajati", repo1.findAll());
 
+		if (sefService.isCeo(Long.valueOf(id))) {
+			model.addAttribute("ceo", "CEO");
+			model.addAttribute("ceoText", "My own vacantion");
+		}
+
 		List<Break> break1 = breakRepository.getBreaksForAngajat(Long.valueOf(id));
 		model.addAttribute("breaks", break1);
-		List<Break> vacanteAngajati = breakService.getBreaksForAngajatiFromEchipeSef(Long.valueOf(id));
+
+		List<Break> vacanteAngajati = new ArrayList<Break>();
+
+		if (sefService.isCeo(Long.valueOf(id))) {
+			vacanteAngajati = breakService.getBreaksForAngajatiFromEchipeSefAndSef(Long.valueOf(id));
+
+		} else {
+			vacanteAngajati = breakService.getBreaksForAngajatiFromEchipeSef(Long.valueOf(id));
+		}
+
 		model.addAttribute("breaksAngajati", vacanteAngajati);
 
 		Status[] s = Status.class.getEnumConstants();
@@ -172,6 +178,13 @@ public class HelloWorldController {
 		model.addAttribute("angajat", angajat);
 		model.addAttribute("angajati", repo1.findAll());
 
+		if (sefService.isCeo(Long.valueOf(id))) {
+			model.addAttribute("ceo", "true");
+			model.addAttribute("ceoText", "My own vacantion");
+		} else {
+			model.addAttribute("ceo", "false");
+		}
+
 		Status[] s = Status.class.getEnumConstants();
 		List<StatusDto> statusDtos = new ArrayList<StatusDto>();
 		for (int i = 0; i < s.length; i++) {
@@ -185,9 +198,19 @@ public class HelloWorldController {
 
 		List<Break> break1 = breakRepository.getBreaksForAngajat(Long.valueOf(id));
 		model.addAttribute("breaks", break1);
-		List<Break> vacanteAngajati = breakService.getBreaksForAngajatiFromEchipeSef(Long.valueOf(id));
+		List<Break> vacanteAngajati = new ArrayList<Break>();
+
+		if (sefService.isCeo(Long.valueOf(id))) {
+			vacanteAngajati = breakService.getBreaksForAngajatiFromEchipeSefAndSef(Long.valueOf(id));
+
+		} else {
+			vacanteAngajati = breakService.getBreaksForAngajatiFromEchipeSef(Long.valueOf(id));
+		}
 		model.addAttribute("breaksAngajati", vacanteAngajati);
 
+		String days = breakService.calculateRemainingDays(angajat.getId());
+		model.addAttribute("days", days);
+		
 		return "userpage";
 	}
 
@@ -345,5 +368,4 @@ public class HelloWorldController {
 
 		return "addTeam";
 	}
-
 }

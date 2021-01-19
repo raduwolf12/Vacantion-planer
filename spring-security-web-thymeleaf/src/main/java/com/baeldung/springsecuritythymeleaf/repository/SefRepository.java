@@ -15,4 +15,7 @@ public interface SefRepository extends JpaRepository<Sef, Long> {
 	
 	@Query(nativeQuery = true, value = "SELECT * FROM sefi where sefi.angajat_id =?")
 	Sef getSefByAngajatId(Long id);
+	
+	@Query(nativeQuery = true, value = "SELECT * from sefi where sefi.ceo=true and sefi.angajat_id=?")
+	Sef isCeo(Long id);
 }

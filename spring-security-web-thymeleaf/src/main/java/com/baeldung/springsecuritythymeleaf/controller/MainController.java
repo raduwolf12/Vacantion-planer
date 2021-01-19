@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.view.RedirectView;
 
 import com.baeldung.springsecuritythymeleaf.repository.AngajatRepository;
+import com.baeldung.springsecuritythymeleaf.service.AngajatService;
 
 @Controller
 public class MainController {
@@ -21,15 +22,11 @@ public class MainController {
 	}
 
 	@RequestMapping({ "/index", "/" })
-//	@GetMapping(value = "/performeLogin")
 	public RedirectView login(@RequestParam("username") String name, @RequestParam("password") String password,
 			Model model) {
-//		if (angajatRepository.login(name, password) == true) {
-			
-			Long id= angajatRepository.getAngajatByEmail(name).getId();
-			return new RedirectView("/userpage?id="+id);
-//		}
-//		return new RedirectView("login2");
+
+		Long id = angajatRepository.getAngajatByEmail(name).getId();
+		return new RedirectView("/userpage?id=" + id);
 
 	}
 

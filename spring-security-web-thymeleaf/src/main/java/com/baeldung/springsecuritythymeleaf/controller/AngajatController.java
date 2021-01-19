@@ -23,12 +23,12 @@ public class AngajatController {
 	private AngajatService angajatService;
 
 	@GetMapping(value = "/angajati", produces = MediaType.APPLICATION_JSON_VALUE)
-	public List<Angajat> getAngajats() {
+	public List<AngajatDto> getAngajats() {
 		return this.angajatService.getAngajati();
 	}
 
 	@GetMapping(value = "/angajat/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public Angajat getAngajat(@PathVariable("id") Long id) {
+	public AngajatDto getAngajat(@PathVariable("id") Long id) {
 		return this.angajatService.getAngajat(id);
 	}
 

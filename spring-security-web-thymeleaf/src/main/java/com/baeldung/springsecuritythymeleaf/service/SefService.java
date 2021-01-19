@@ -56,10 +56,17 @@ public class SefService {
 	public Object getAngajatiEchipeForSefId(Long id) {
 		return echipaRepository;
 	}
-	
+
 	public Sef getSefByAngajatId(Long id) {
 		return repository.getSefByAngajatId(id);
 	}
 
-	
+	public boolean isCeo(Long id) {
+
+		if (repository.isCeo(id) != null) {
+			return true;
+		} else {
+			return false;
+		}
+	}
 }
